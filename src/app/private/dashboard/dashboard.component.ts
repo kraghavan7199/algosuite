@@ -1,6 +1,9 @@
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterOutlet } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { AuthState } from "../../store/state";
+import { selectUserProfile } from "../../store/selectors";
 
 @Component({
     selector: 'app-auth',
@@ -11,13 +14,22 @@ import { Router, RouterOutlet } from "@angular/router";
   })
   export class DashboardComponent { 
 
-    constructor( private router: Router) {}
+    name!: string;
+    constructor( private router: Router, private store: Store<{ auth: AuthState }>) {}
 
-    substring() {
+    ngOnInit() {
+      this.store.select(selectUserProfile).subscribe(res => {
+        if(res && res.name) {
+          this.name = res.name;
+        }
+      })
+    }
+
+    goToStringAnalysis() {
       this.router.navigate(['/private/substring']);
     }
 
-    tree() {
+    goToTreeVisualizer() {
       this.router.navigate(['/private/tree']);
     }
 

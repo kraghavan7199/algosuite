@@ -1,55 +1,45 @@
-
-
-  <div class="container py-5">
-    <div class="row g-4 justify-content-center">
-      <div class="col-md-6 col-lg-4">
-        <div class="card h-100 feature-card">
-          <div class="card-body d-flex flex-column align-items-center p-4">
-            <div class="icon-wrapper mb-3">
-              <i class="fas fa-code"></i>
-            </div>
-            <h3 class="card-title h4 mb-3">Substring Analyzer</h3>
-            <p class="card-text text-muted text-center mb-4">
-              Analyze string patterns and find substrings efficiently
-            </p>
-            <button (click)="substring()" class="btn btn-primary mt-auto">
-              <i class="fas fa-arrow-right me-2"></i>Try It Out
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="card h-100 feature-card">
-          <div class="card-body d-flex flex-column align-items-center p-4">
-            <div class="icon-wrapper mb-3">
-              <i class="fas fa-project-diagram"></i>
-            </div>
-            <h3 class="card-title h4 mb-3">Binary Tree Explorer</h3>
-            <p class="card-text text-muted text-center mb-4">
-              Visualize and manipulate binary tree structures
-            </p>
-            <button (click)="tree()" class="btn btn-primary mt-auto">
-              <i class="fas fa-arrow-right me-2"></i>Try It Out
-            </button>
-          </div>
+<div class="container   py-4"  style="min-height: 100vh;">
+  <h1 class="mb-3">Welcome, {{name}}</h1>
+  <p class="lead">Explore these features:</p>
+  <hr>
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fas fa-code mr-2"></i>String Analysis</h5>
+          <p class="card-text">Analyze strings and find substrings and the longest substring.</p>
+          <a  (click)="goToStringAnalysis()" class="btn btn-primary">Go to String Analysis</a>
         </div>
       </div>
     </div>
-
-    <div class="row mt-5">
-      <div class="col-12">
-        <div class="card activity-card">
-          <div class="card-body p-4">
-            <h3 class="h5 mb-4 d-flex align-items-center">
-              <i class="fas fa-history me-2"></i>
-              <span>Recent Activity</span>
-            </h3>
-            <div class="activity-timeline">
-              <!-- Add activity items here -->
-            </div>
-          </div>
+    <div class="col-md-6 mb-4">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fas fa-project-diagram mr-2"></i>Binary Tree Visualization</h5>
+          <p class="card-text">Visualize a binary tree and calculate the maximum sum.</p>
+          <a (click)="goToTreeVisualizer()" class="btn btn-primary">Go to Binary Tree</a>
         </div>
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-6 text-center mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fas fa-keyboard mr-2"></i>Shortcuts</h5>
+          <p class="card-text">View a list of available shortcuts.</p>
+          <a href="/shortcuts" class="btn btn-primary">Go to Shortcuts</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fas fa-book mr-2"></i>Documentation</h5>
+          <p class="card-text">Read the documentation for the previous features.</p>
+          <a href="/docs" class="btn btn-primary">Go to Documentation</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

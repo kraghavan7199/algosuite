@@ -16,6 +16,9 @@ export const PUBLIC_ROUTES: Routes = [
             },
             {
                 path: 'auth', loadComponent: () => import('./auth/auth.component').then(m => AuthComponent)
+            },
+            {
+                path: 'docs', loadComponent: () => import('./docs/docs.component').then(m => m.DocsComponent)
             }
         ]
     }
