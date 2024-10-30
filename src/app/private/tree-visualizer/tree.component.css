@@ -1,0 +1,168 @@
+:host ::ng-deep .p-organizationchart {
+    padding: 2rem;
+  }
+
+  :host ::ng-deep .p-organizationchart .p-organizationchart-node-content {
+    border: none;
+    background: transparent;
+    padding: 0;
+  }
+
+  .node-content {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .node-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .node-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  :host ::ng-deep .p-organizationchart .p-organizationchart-line-down {
+    background: #6366F1;
+  }
+
+  :host ::ng-deep .p-organizationchart .p-organizationchart-line-left {
+    border-right: 2px solid #6366F1;
+  }
+
+  :host ::ng-deep .p-organizationchart .p-organizationchart-line-top {
+    border-top: 2px solid #6366F1;
+  }
+
+  .modal {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .btn {
+    transition: all 0.2s;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .card {
+    position: relative;
+    overflow: hidden;
+  }
+  
+ .treeCard .card-body {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.9);
+  }
+  
+  .treeCard .card-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    filter: blur(0.5px);
+    transform: scale(1.1);
+    opacity: 10;
+  }
+ 
+  .node-content:hover {
+    transform: scale(1.05);
+  }
+  
+  .highlight {
+    border-radius: 50%;
+    color: #2c313c !important;
+    border: 10px solid #2c313c;
+    transform: scale(1.2);
+  }
+
+  .modal-content {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .modal.show {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+  
+  .input-group .btn {
+    z-index: 0;
+  }
+  
+  .tooltip {
+    font-size: 0.875rem;
+  }
+
+
+  /* tree-card.component.scss */
+.tree-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  cursor: grab;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: 
+  linear-gradient(90deg, rgba(0,0,0,.05) 1px, transparent 1px) 0 0 / 20px 20px,
+  linear-gradient(rgba(0,0,0,.05) 1px, transparent 1px) 0 0 / 20px 20px;
+}
+
+.tree-container:active {
+  cursor: grabbing;
+}
+
+.tree-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  transition: transform 0.05s ease-out;
+  will-change: transform;
+}
+
+.zoom-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 5px;
+  
+  button {
+    margin: 0 2px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+
+  

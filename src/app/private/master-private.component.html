@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a (click)="navigateToLanding()" class="navbar-brand fw-bold">AlgoSuite</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item me-3" style="cursor: pointer;">
+                    <a (click)="navigateToStringAnalyzer()" class="nav-link py-3 py-lg-2">
+                        <i class="fas fa-code"></i> String Explorer
+                    </a>
+                </li>
+                <li class="nav-item me-3" style="cursor: pointer;">
+                    <a (click)="navigateToTree()" class="nav-link py-3 py-lg-2">
+                        <i class="fas fa-tree"></i> Tree Visualizer
+                    </a>
+                </li>
+                <li class="nav-item me-3" style="cursor: pointer;">
+                    <a (click)="navigateToHome()" class="nav-link py-3 py-lg-2">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown d-none d-lg-block">
+                    <button class="btn btn-link nav-link p-1 border-0 d-flex align-items-center" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fs-2"></i>
+                        <i class="fas fa-chevron-down ms-1 small"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li><a class="dropdown-item py-2" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2" href="#" (click)="logout()">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<router-outlet></router-outlet>

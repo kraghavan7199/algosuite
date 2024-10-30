@@ -1,0 +1,56 @@
+<div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+
+    <div class="card shadow-lg border-0 rounded-3" style="width: 400px;">
+        <div class="card-body p-4">
+            <h3 class="text-center mb-4">AlgoSuite</h3>
+            <ul class="nav nav-pills nav-fill mb-4" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active rounded-pill text-muted" id="login-tab" data-bs-toggle="tab" 
+                        data-bs-target="#login"  type="button" role="tab">Login</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-pill text-muted" id="signup-tab" data-bs-toggle="tab" 
+                        data-bs-target="#signup" type="button" role="tab">Signup</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="login" role="tabpanel">
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-4">
+                            <label for="loginEmail" class="form-label">Email address</label>
+                            <input type="email"  formControlName="email"  class="form-control form-control-lg" id="loginEmail" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password"  formControlName="password" class="form-control form-control-lg" id="loginPassword" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn bg-dark text-white btn-lg">Login</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="signup" role="tabpanel">
+                    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()"  >
+                        <div class="mb-4">
+                            <label for="signupName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control form-control-lg" id="signupName" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="signupEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control form-control-lg" id="signupEmail" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="signupPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control form-control-lg" id="signupPassword" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn bg-dark text-white btn-lg">Signup</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

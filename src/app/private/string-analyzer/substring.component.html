@@ -1,0 +1,175 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card-header text-center py-4">
+        <h1 class="mb-0">String Explorer</h1>
+        <p class="text-muted mt-2 mb-0">Analyze unique substrings and patterns</p>
+      </div>
+
+      <div class="card-body p-4">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-4">
+          <div class="form-floating mb-4 position-relative">
+            <input type="text" class="form-control custom-input" id="inputString" autocomplete="off"
+              placeholder="Enter a string" formControlName="inputString" (blur)="showSuggestions = false"
+              (focus)="showSuggestions = true">
+            <label for="inputString">Enter your string for analysis</label>
+            <div class="invalid-feedback" *ngIf="error">
+              {{ error }}
+            </div>
+
+            <div *ngIf="showSuggestions && suggestions.length > 0"
+              class="suggestions-dropdown position-absolute w-100 bg-white shadow-lg rounded-bottom border mt-1 z-50">
+              <div *ngFor="let suggestion of suggestions" class="suggestion-item p-2 cursor-pointer hover:bg-gray-100"
+                (mousedown)="selectSuggestion(suggestion)">
+                {{ suggestion }}
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-dark btn-lg px-5 custom-button">
+              <i class="fas fa-search me-2"></i>Analyze
+            </button>
+          </div>
+        </form>
+
+        <div *ngIf="result" class="result-section">
+          <div class="shadow-lg rounded-lg overflow-hidden border border-gray-200">
+            <div class="d-flex">
+              <h3 class="px-4 py-3 text-lg fw-bold">
+                Analysis Results
+              </h3>
+              <i class="ml-auto fas fa-circle-xmark pr-2 pt-2" style="cursor: pointer;" (click)="closeAnalysis()"></i>
+            </div>
+
+            <div class="p-4 bg-white">
+
+              <div class="bg-gray-50 p-3 rounded-lg">
+                <p class="mb-2">
+                  <span class="font-semibold text-gray-700">Input String:</span>
+                  <span class="ml-2">{{ result.input }}</span>
+                </p>
+                <p>
+                  <span class="font-semibold text-gray-700">Longest Length:</span>
+                  <span class="ml-2 bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                    {{ result.longestLength }}
+                  </span>
+                </p>
+              </div>
+
+              <!-- Unique Substrings -->
+              <div>
+                <p class="font-semibold text-gray-700 mb-2">Unique Substrings:</p>
+                <div class="unique-substrings flex flex-wrap gap-2">
+                  <span *ngFor="let substr of result.uniqueSubstrings" class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full 
+                                                     hover:bg-blue-100 transition-colors cursor-pointer"
+                    [class.bg-green-100]="substr.length === result.longestLength"
+                    [class.text-green-700]="substr.length === result.longestLength" (click)="copySubstring(substr)">
+                    {{ substr }}
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-history text-dark me-2"></i>
+              <h3 class="card-title h5 mb-0">History</h3>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col" class="px-4 py-3">Input String</th>
+                  <th scope="col" class="px-4 py-3">Date</th>
+                  <th scope="col" class="px-4 py-3 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let word of history">
+                  <td class="px-4 py-3">{{ word.input_string }}</td>
+                  <td class="px-4 py-3 text-muted">
+                    {{getFormattedDate(word.created_at)}}
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <button (click)="viewString(word)" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal"
+                      data-bs-target="#substringModal">
+                      <i class="fas fa-eye me-1"></i> View
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="history.length === 0">
+                  <td colspan="3" class="text-center py-4 text-muted">
+                    <i class="fas fa-inbox me-2"></i>
+                    No history records found
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="showLoadMore" class="card-footer bg-white text-center py-3">
+            <button (click)="loadMore()" class="btn btn-outline-secondary">
+              {{ 'Load More' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="substringModal" tabindex="-1" aria-labelledby="substringModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="substringModalLabel">Substring Analysis</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div *ngIf="selectedHistoryItem" class="modal-body">
+
+        <div class="p-4 bg-white">
+
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <p class="mb-2">
+              <span class="font-semibold text-gray-700">Input String:</span>
+              <span class="ml-2">{{ selectedHistoryItem.input_string }}</span>
+            </p>
+            <p>
+              <span class="font-semibold text-gray-700">Longest Length:</span>
+              <span class="ml-2 bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                {{ selectedHistoryItem.longest_substring_length }}
+              </span>
+            </p>
+          </div>
+
+          <div>
+            <p class="font-semibold text-gray-700 mb-2">Unique Substrings:</p>
+            <div class="unique-substrings flex flex-wrap gap-2">
+              <span *ngFor="let substr of selectedHistoryItem.unique_substrings" class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full 
+                                                 hover:bg-blue-100 transition-colors cursor-pointer"
+                [class.bg-green-100]="substr.length === selectedHistoryItem.longest_substring_length"
+                [class.text-green-700]="substr.length === selectedHistoryItem.longest_substring_length"
+                (click)="copySubstring(substr)">
+                {{ substr }}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
