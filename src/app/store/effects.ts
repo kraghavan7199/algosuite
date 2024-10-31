@@ -32,12 +32,31 @@ export class AppEffects {
           tap(response => this.authService.storeTokens(response)),
           mergeMap(response =>
             of(
-              AuthActions.loginSuccess({ userProfile: response.userProfile }),
+              AuthActions.loginSuccess(),
               AuthActions.loadUserProfile()
             )
           ),
           tap(() => this.router.navigate(['/private/dashboard'])),
           catchError(error => of(AuthActions.loginFailure({ error })))
+        )
+      )
+    )
+  );
+
+  signup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.signup),
+      mergeMap(({ credentials }) =>
+        this.authService.register(credentials).pipe(
+          tap(response => this.authService.storeTokens(response)),
+          mergeMap(response =>
+            of(
+              AuthActions.loginSuccess(),
+              AuthActions.loadUserProfile()
+            )
+          ), tap(() => this.router.navigate(['/private/dashboard'])),
+          catchError(error => of(AuthActions.signupFailure({ error }))
+        )
         )
       )
     )

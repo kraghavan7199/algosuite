@@ -1,17 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 import { StringService } from '../../services/string.service';
 import moment from 'moment';
 import { debounceTime, distinctUntilChanged, of, Subject, switchMap, takeUntil } from 'rxjs';
-
-interface AnalysisResult {
-  input: string;
-  timestamp: Date;
-  longestLength: number;
-  uniqueSubstrings: string[];
-}
+import { AnalysisResult } from '../models/AnalysisResult';
 
 @Component({
   selector: 'app-substring',
@@ -22,7 +16,7 @@ interface AnalysisResult {
   styleUrl: './substring.component.css'
 
 })
-export class SubstringComponent {
+export class SubstringComponent implements OnInit {
   form: FormGroup;
   result: AnalysisResult | null = null;
   error: string | null = null;
@@ -38,7 +32,7 @@ export class SubstringComponent {
   skip = 0;
   limit = 10;
   showSuggestions = false;
-  suggestions: string[] =  [];
+  suggestions: string[] = [];
   private destroy$ = new Subject<void>();
   showLoadMore = true;
 
@@ -55,9 +49,9 @@ export class SubstringComponent {
   ngOnInit() {
     this.form.get('inputString')?.valueChanges.pipe(
       takeUntil(this.destroy$),
-      debounceTime(300), 
+      debounceTime(300),
       distinctUntilChanged(),
-      switchMap(value => 
+      switchMap(value =>
         value ? this.stringService.getStringSuggestions(value) : of([])
       )
     ).subscribe((suggestions: any) => {
@@ -65,28 +59,26 @@ export class SubstringComponent {
       this.suggestions = suggestions;
       this.showSuggestions = suggestions.length > 0;
     });
-  
+
     this.getUserHistory();
   }
 
   getUserHistory() {
-    this.stringService.getUserHistory(this.limit, this.skip).subscribe((res:any) => {
+    this.stringService.getUserHistory(this.limit, this.skip).subscribe((res: any) => {
       this.showLoadMore = res.length === this.limit;
       this.history = this.history.concat(JSON.parse(JSON.stringify(res)));
     })
   }
 
   viewString(word: any) {
-   this.selectedHistoryItem  = word
+    this.selectedHistoryItem = word
   }
 
   onSubmit() {
     if (this.form.valid) {
       const input = this.form.get('inputString')!.value;
       this.error = null;
-
       this.stringService.getSubstringAnalysis(input).subscribe((res: any) => {
-
         this.result = { input, longestLength: res.longestSubstringLength, uniqueSubstrings: res.uniqueSubstring, timestamp: new Date() };
         this.skip = 0;
         this.history = [];
@@ -94,11 +86,6 @@ export class SubstringComponent {
 
       });
     }
-  }
-
-
-  clearHistory() {
-    this.analysisHistory = [];
   }
 
   loadMore() {
@@ -111,12 +98,7 @@ export class SubstringComponent {
     this.showSuggestions = false;
   }
 
-  getPages(): number[] {
-    const pageCount = Math.ceil(this.analysisHistory.length / this.itemsPerPage);
-    return Array.from({ length: pageCount }, (_, i) => i + 1);
-  }
-
-  getFormattedDate(date:any) {
+  getFormattedDate(date: any) {
     return moment(date).format('LLL');
   }
 
@@ -129,7 +111,4 @@ export class SubstringComponent {
     this.result = null;
   }
 
-  closeResult() {
-    this.result = null;
-  }
 }

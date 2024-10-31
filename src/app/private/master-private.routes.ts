@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
 import { SubstringComponent } from "./string-analyzer/substring.component";
 import { TreeComponent } from "./tree-visualizer/tree.component";
-import { LandingPageComponent } from "../public/landing-page.component";
+import { LandingPageComponent } from "../landing-page.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { MasterPrivateComponent } from "./master-private.component";
 import { authGuard } from "../guards/auth-guard";

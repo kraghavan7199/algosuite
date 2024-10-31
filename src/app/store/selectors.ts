@@ -18,3 +18,8 @@ export const selectUserProfile = createSelector(
   selectAuthState,
   (state) => state.userProfile
 );
+
+export const selectError = createSelector(
+  selectAuthState,
+  (state) => state.error
+);

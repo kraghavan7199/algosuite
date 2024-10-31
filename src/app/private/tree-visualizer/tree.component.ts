@@ -55,6 +55,7 @@ export class TreeComponent {
   translateX = 0;
   translateY = 0;
   scale = 1;
+  
 
   get transform() {
     return `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale})`;

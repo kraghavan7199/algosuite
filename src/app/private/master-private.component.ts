@@ -3,6 +3,11 @@ import { Router, RouterOutlet } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 import { ToastModule } from "primeng/toast";
 import { MessageService } from "primeng/api";
+import { Store } from "@ngrx/store";
+import { AuthState } from "../store/state";
+import { selectUserProfile } from "../store/selectors";
+import { HeaderComponent } from "../components/header/header.component";
+import { FooterComponent } from "../components/footer/footer.component";
 
 
 
@@ -11,32 +16,13 @@ import { MessageService } from "primeng/api";
 @Component({
     selector: 'app-private',
     standalone: true,
-    imports: [ RouterOutlet],
+    imports: [RouterOutlet, HeaderComponent, FooterComponent],
     templateUrl: './master-private.component.html'
     
   })
   export class MasterPrivateComponent { 
-    
-    constructor(private router: Router, private authService: AuthService) {
-    }
 
-    navigateToHome() {
-      this.router.navigate(['/private/dashboard'])
-    }
+    ngOnInit() {
 
-    navigateToStringAnalyzer() {
-      this.router.navigate(['/private/substring']);
-    }
-
-    navigateToTree() {
-      this.router.navigate(['/private/tree']);
-    }
-
-    navigateToLanding() {
-      this.router.navigate(['/landing'])
-    }
-    
-    logout() {
-      this.authService.logout();
     }
   }

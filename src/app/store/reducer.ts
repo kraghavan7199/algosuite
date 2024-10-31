@@ -7,15 +7,19 @@ import { initialState } from './state';
 export const authReducer = createReducer(
     initialState,
     on(AuthActions.login, state => ({ ...state, loading: true, error: null })),
-    on(AuthActions.loginSuccess, (state, { userProfile }) => ({
+    on(AuthActions.loginSuccess, (state) => ({
       ...state,
       isLoggedIn: true,
-      userProfile,
       loading: false,
     })),
     on(AuthActions.loginFailure, (state, { error }) => ({
       ...state,
-      error,
+      error: error,
+      loading: false,
+    })),
+    on(AuthActions.signupFailure, (state, { error }) => ({
+      ...state,
+      error: error,
       loading: false,
     })),
     on(AuthActions.logout, (state) => ({
@@ -38,7 +42,6 @@ export const authReducer = createReducer(
       ...state,
       isLoggedIn: false,
       userProfile: null,
-      error,
       loading: false
     }))
 );

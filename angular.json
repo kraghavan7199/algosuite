@@ -25,7 +25,11 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              { "glob": "**/*", "input": "node_modules/monaco-editor/min/vs", "output": "/assets/monaco/" }
+              {
+                "glob": "**/*",
+                "input": "node_modules/monaco-editor",
+                "output": "/assets/monaco/"
+              }        
             ],
             "styles": [
               "src/styles.css",
@@ -35,7 +39,8 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeflex/primeflex.css",
-              "node_modules/jsoneditor/dist/jsoneditor.min.css"
+              "node_modules/jsoneditor/dist/jsoneditor.min.css",
+              "node_modules/animate.css/animate.min.css"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"

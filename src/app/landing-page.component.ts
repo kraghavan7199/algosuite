@@ -14,8 +14,13 @@ export class LandingPageComponent {
     goToDashboard() {
       this.router.navigate(['/private/dashboard'])
     }
-    goToLogin() {
-      this.router.navigate(['/auth'])
+    
+    goToDocs() {
+      this.router.navigate(['/docs'])
+    }
+
+    goToShortcuts() {
+      this.router.navigate(['/shortcuts'])
     }
 }
 

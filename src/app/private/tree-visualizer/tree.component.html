@@ -1,24 +1,22 @@
-
-
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <div class="card-header text-center py-4">
-                <h1 class="mb-0">Tree Visualizer</h1>
-                <p class="text-muted mt-2 mb-0">Visualize BSTs and Perform Actions  </p>
-            </div>
-        </div>
+<div class="container py-5 ">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card-header text-center py-4">
+        <h1 class="mb-0">Tree Visualizer</h1>
+        <p class="text-muted mt-2 mb-0">Visualize BSTs and Perform Actions </p>
+      </div>
     </div>
+  </div>
 </div>
 
 
 
-<div class="container">
+<div class="container mb-4">
   <div class="d-flex">
     <button class="btn btn-outline-primary me-2 mb-2" (click)="resetTree()">
       <i class="fas fa-redo"></i> Reset Tree
     </button>
-    <button class="btn btn-outline-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#editTreeModal">
+    <button class="btn btn-outline-primary me-2 mb-2" (click)="editTree()" data-bs-toggle="modal" data-bs-target="#editTreeModal">
       <i class="fas fa-pen-to-square"></i> Edit Tree
     </button>
     <button class="btn btn-outline-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#generateTreeModal">
@@ -34,24 +32,20 @@
     </div>
   </div>
   <div class="treeCard card shadow-sm">
+    <div *ngIf="maxSum" class="alert alert-success d-flex m-4 align-items-center">
+      <p class="fw-bold">Maximum Sum Path From: {{maxSum}}</p>
+      <button (click)="clearMaxSum()" class="btn btn-outline-danger ml-auto">Clear</button>
+    </div>
     <div class="card-body">
       <div class="zoom-controls">
         <button (click)="zoomIn()" class="btn btn-sm btn-secondary">+</button>
         <button (click)="zoomOut()" class="btn btn-sm btn-secondary">-</button>
       </div>
-      
-      <div *ngIf="maxSum" class="alert alert-success d-flex align-items-center">
-        <p class="fw-bold">Maximum Sum Path From: {{maxSum}}</p>
-        <button (click)="clearMaxSum()" class="btn btn-outline-danger ml-auto">Clear</button>
-      </div>
 
-      <div #container 
-           class="tree-container"
-           (mousedown)="startDragging($event)"
-           (mousemove)="onDrag($event)"
-           (mouseup)="stopDragging()"
-           (mouseleave)="stopDragging()"
-           (wheel)="onWheel($event)">
+
+
+      <div #container class="tree-container" (mousedown)="startDragging($event)" (mousemove)="onDrag($event)"
+        (mouseup)="stopDragging()" (mouseleave)="stopDragging()" (wheel)="onWheel($event)">
         <div class="tree-content" [style.transform]="transform">
           <p-organizationChart [value]="[root]" styleClass="company">
             <ng-template let-node pTemplate="default">
@@ -66,112 +60,89 @@
       </div>
     </div>
   </div>
-  </div>
+</div>
 
-  <!-- Node Modal -->
-  <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content shadow-lg rounded-lg">
-        <div class="modal-header bg-light">
-          <h5 class="modal-title fw-bold">
-            <i class="fas fa-edit me-2"></i>Edit Tree Node
-          </h5>
-          <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+<div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold">
+          <i class="fas fa-edit me-2"></i>Edit Tree Node
+        </h5>
+        <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+      </div>
+
+      <div *ngIf="selectedNode" class="modal-body p-4">
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Current Node Value</label>
+          <input type="number" class="form-control form-control-lg" [(ngModel)]="selectedNode.data.value"
+            placeholder="Enter node value" />
         </div>
-  
-        <div *ngIf="selectedNode" class="modal-body p-4">
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Current Node Value</label>
-            <input 
-              type="number" 
-              class="form-control form-control-lg"
-              [(ngModel)]="selectedNode.data.value"
-              placeholder="Enter node value"
-            />
+
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h6 class="mb-0 fw-semibold">Add Child Nodes</h6>
           </div>
-  
-          <div class="card mb-4">
-            <div class="card-header bg-light">
-              <h6 class="mb-0 fw-semibold">Add Child Nodes</h6>
-            </div>
-            <div class="card-body">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Left Child Value</label>
-                  <div class="input-group">
-                    <input 
-                      type="number" 
-                      class="form-control"
-                      [(ngModel)]="newLeftNodeValue"
-                      placeholder="Left value"
-                    />
-                  </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Left Child Value</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" [(ngModel)]="newLeftNodeValue" placeholder="Left value" />
                 </div>
-  
-                <div class="col-md-6">
-                  <label class="form-label">Right Child Value</label>
-                  <div class="input-group">
-                    <input 
-                      type="number" 
-                      class="form-control"
-                      [(ngModel)]="newRightNodeValue"
-                      placeholder="Right value"
-                    />
-                  </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Right Child Value</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" [(ngModel)]="newRightNodeValue" placeholder="Right value" />
                 </div>
               </div>
             </div>
           </div>
-  
-    
-          <div class="d-grid">
-            <button 
-              class="btn btn-danger"
-              (click)="deleteNode()"
-              [disabled]="selectedNode === root"
-            >
-              <i class="fas fa-trash me-2"></i>Delete Node
-            </button>
-          </div>
         </div>
-        <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-secondary" (click)="closeModal()">
-            <i class="fas fa-times me-2"></i>Cancel
-          </button>
-          <button type="button" class="btn btn-primary" (click)="saveChanges()">
-            <i class="fas fa-save me-2"></i>Save Changes
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal-backdrop fade show" *ngIf="showModal"></div>
-  <p-toast position="top-right"></p-toast>
 
-  <div class="modal fade" id="generateTreeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Generate Tree</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <label class="form-label fw-semibold">Enter Tree Depth</label>
-          <input 
-          type="number" 
-          class="form-control form-control-lg"
-          [(ngModel)]="depth"
-          placeholder="Enter node value"
-        />
-        </div>
-        <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="generateTree()">
-            <i class="fas fa-save me-2"></i>Generate Tree
+
+        <div class="d-grid">
+          <button class="btn btn-danger" (click)="deleteNode()" [disabled]="selectedNode === root">
+            <i class="fas fa-trash me-2"></i>Delete Node
           </button>
         </div>
       </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          <i class="fas fa-times me-2"></i>Cancel
+        </button>
+        <button type="button" class="btn btn-primary" (click)="saveChanges()">
+          <i class="fas fa-save me-2"></i>Save Changes
+        </button>
+      </div>
     </div>
   </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="showModal"></div>
+<p-toast position="top-right"></p-toast>
+
+<div class="modal fade" id="generateTreeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Generate Tree</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label fw-semibold">Enter Tree Depth</label>
+        <input type="number" class="form-control form-control-lg" [(ngModel)]="depth" placeholder="Enter node value" />
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="generateTree()">
+          <i class="fas fa-save me-2"></i>Generate Tree
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="modal fade" id="editTreeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
@@ -183,7 +154,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        
+        <div id="json-editor" style="height: 400px;"></div>
       </div>
     </div>
 

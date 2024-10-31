@@ -18,14 +18,20 @@ export const login = createAction(
   props<{ credentials: any }>()
 );
 
-export const loginSuccess = createAction(
-  '[Auth] Login Success',
-  props<{ userProfile: any }>()
+export const signup = createAction(
+  '[Auth] Signup',
+  props<{ credentials: any }>()
 );
+export const loginSuccess = createAction(
+  '[Auth] Login Success');
 
 export const loginFailure = createAction(
   '[Auth] Login Failure',
   props<{ error: any }>()
 );
 
+export const signupFailure = createAction(
+  '[Auth] Login Failure',
+  props<{ error: any }>()
+);
 export const logout = createAction('[Auth] Logout');
