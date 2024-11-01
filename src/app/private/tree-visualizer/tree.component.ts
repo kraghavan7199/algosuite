@@ -1,5 +1,5 @@
-import { CommonModule } from "@angular/common";
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { CommonModule, Location } from "@angular/common";
+import { Component, ElementRef, HostListener, ViewChild } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterOutlet } from "@angular/router";
 import * as d3 from 'd3';
@@ -7,6 +7,7 @@ import { MessageService, TreeNode } from "primeng/api";
 import { OrganizationChartModule } from "primeng/organizationchart";
 import { ToastModule } from "primeng/toast";
 import { TreeService } from "../../services/tree.service";
+import { LengthFilterPipe } from "../../pipes/lengthfilter.pipe";
 declare var bootstrap: any;
 
 
@@ -45,30 +46,30 @@ export class TreeComponent {
   path: any;
   highlightedNodeId: any = null;
   private isAnimating = false;
-  depth= 0;
+  depth = 0;
   @ViewChild('container') containerRef!: ElementRef;
-  
-  
+  maxSumLabel!: 'From A Leaf Node To Any Node' | 'Between Any Two Nodes';
+
   isDragging = false;
   startX = 0;
   startY = 0;
   translateX = 0;
   translateY = 0;
   scale = 1;
-  
+
 
   get transform() {
     return `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale})`;
   }
 
-  constructor(private treeService: TreeService, private messageService: MessageService) { }
+  constructor(private treeService: TreeService, private messageService: MessageService, private location: Location) { }
 
   ngOnInit() {
     this.getTree();
 
   }
 
-  
+
 
   getTree() {
     this.treeService.getTree().subscribe((res: any) => {
@@ -84,9 +85,13 @@ export class TreeComponent {
     })
   }
 
+  isNodeHighlighted(node: any) {
+    return this.path && this.path.includes(node.data.id) && this.isAnimating
+  }
+
   initializeTree() {
     this.root = {
-      data: { value: 'Root' , id: this.generateId() },
+      data: { value: 'Root', id: this.generateId() },
       children: [],
       expanded: true
     };
@@ -100,6 +105,14 @@ export class TreeComponent {
 
   openNodeModal(node: BinaryNode) {
     this.selectedNode = node;
+    if(node.children && node.children[0] && node.children[0].data.value) {
+       this.newLeftNodeValue =  <number>node.children[0
+      
+       ].data.value;
+    }
+    if(node.children && node.children[1] && node.children[1].data.value) {
+      this.newRightNodeValue =  <number>node.children[1].data.value;
+   }
     this.showModal = true;
   }
 
@@ -112,7 +125,6 @@ export class TreeComponent {
 
   startAnimation() {
     this.isAnimating = true;
-    this.animateNodes(this.path);
   }
 
 
@@ -123,22 +135,10 @@ export class TreeComponent {
 
   }
 
-  async animateNodes(nodes: any[]) {
-    while (this.isAnimating) {
-      for (let i = 0; i < nodes.length; i++) {
-        if (!this.isAnimating) return;
-        this.highlightedNodeId = nodes[i];
-        await this.delay(1000);
-      }
-    }
-  }
-  
-  delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
   calculateMaxSumPath(type: string) {
     this.clearMaxSum();
+    this.maxSumLabel = type === 'maxLeafToNode' ? 'From A Leaf Node To Any Node' : 'Between Any Two Nodes';
     this.treeService.calculateMaxSumPath(type).subscribe((res: any) => {
       if (res) {
         this.maxSum = res.sum;
@@ -149,13 +149,13 @@ export class TreeComponent {
   }
 
   saveChanges() {
-    if((this.selectedNode?.data.value === null || this.selectedNode?.data.value === 'Root') && (this.newLeftNodeValue !== null || this.newRightNodeValue !== null)) {
+    if ((this.selectedNode?.data.value === null || this.selectedNode?.data.value === 'Root') && (this.newLeftNodeValue !== null || this.newRightNodeValue !== null)) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Current Node Value Can\'t Be Null ',
       });
-        return;
+      return;
     }
     this.addLeftChild();
     this.addRightChild();
@@ -221,17 +221,24 @@ export class TreeComponent {
   }
 
   addLeftChild() {
-    console.log(this.selectedNode)
-    if (this.selectedNode && this.selectedNode.children && !this.hasLeftChild() && this.newLeftNodeValue) {
-      const newNode = this.createNewNode(this.newLeftNodeValue);
-      this.selectedNode.children[0] = newNode;
+    if (this.selectedNode && this.selectedNode.children && this.newLeftNodeValue) {
+      if (!this.hasLeftChild()) {
+        this.selectedNode.children[0] = this.createNewNode(this.newLeftNodeValue);
+        return;
+      }
+
     }
+
+
   }
 
   addRightChild() {
-    if (this.selectedNode && this.selectedNode.children && !this.hasRightChild() && this.newRightNodeValue) {
-      const newNode = this.createNewNode(this.newRightNodeValue);
-      this.selectedNode.children[1] = newNode;
+    if (this.selectedNode && this.selectedNode.children && this.newRightNodeValue) {
+
+      if (!this.hasRightChild()) {
+        this.selectedNode.children[1] = this.createNewNode(this.newRightNodeValue);
+        return;
+      }
     }
   }
 
@@ -256,15 +263,15 @@ export class TreeComponent {
 
     deleteNodeById(this.root, this.selectedNode.data.id);
 
-   this.saveChanges();
+    this.saveChanges();
   }
 
   generateTree() {
-    this.treeService.generateBinaryTree({depth: this.depth}).subscribe((res:any) => {
+    this.treeService.generateBinaryTree({ depth: this.depth }).subscribe((res: any) => {
       const binaryNode = this.convertNodeToBinaryNode(res);
-        if (binaryNode) {
-          this.root = binaryNode;
-        }
+      if (binaryNode) {
+        this.root = binaryNode;
+      }
     })
   }
 
@@ -276,7 +283,7 @@ export class TreeComponent {
 
   onDrag(event: MouseEvent) {
     if (!this.isDragging) return;
-    
+
     event.preventDefault();
     this.translateX = event.clientX - this.startX;
     this.translateY = event.clientY - this.startY;
@@ -288,17 +295,17 @@ export class TreeComponent {
 
   onWheel(event: WheelEvent) {
     event.preventDefault();
-    
+
     const delta = event.deltaY > 0 ? 0.9 : 1.1;
     const rect = this.containerRef.nativeElement.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const newScale = Math.max(0.5, Math.min(2, this.scale * delta));
-    
+
     const scaleChange = newScale - this.scale;
     this.translateX -= (x - this.translateX) * (scaleChange / this.scale);
     this.translateY -= (y - this.translateY) * (scaleChange / this.scale);
-    
+
     this.scale = newScale;
   }
 
@@ -310,5 +317,40 @@ export class TreeComponent {
     this.scale = Math.max(0.5, this.scale * 0.9);
   }
 
+  centerInScroll() {
+    const container = this.containerRef.nativeElement;
+    const rect = container.getBoundingClientRect();
+
+
+    const centerX = (rect.width / 2) / this.scale;
+    const centerY = (rect.height / 2) / this.scale;
+
+
+    this.translateX = centerX - (container.offsetWidth / 2) / this.scale;
+    this.translateY = centerY - (container.offsetHeight / 2) / this.scale;
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    if (event.ctrlKey && event.key === 'd') {
+      event.preventDefault();
+      this.resetTree();
+    }
+
+    if (event.ctrlKey && event.key === 'r') {
+      event.preventDefault();
+      this.goBack();
+    }
+
+    if (event.ctrlKey && event.key === 'l') {
+      event.preventDefault();
+      this.goBack();
+    }
+
+  }
 
 }

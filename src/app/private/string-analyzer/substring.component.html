@@ -1,10 +1,16 @@
 <div class="container py-5 animate__animated animate__fadeIn">
   <div class="row justify-content-center">
     <div class="col-lg-10">
-      <div class="card-header text-center py-4">
-        <h1 class="mb-0">String Explorer</h1>
-        <p class="text-muted mt-2 mb-0">Analyze unique substrings and patterns</p>
+      <div class="d-flex align-items-center card-header">
+        <div class=" py-4">
+          <h1 class="mb-0">String Explorer</h1>
+          <p class="text-muted mt-2 mb-0">Analyze unique substrings and patterns</p>
+        </div>
+        <button (click)="goBack()" class="btn btn-outline-dark btn-sm me-3 ml-auto" >
+          <i class="fas fa-arrow-left me-2"></i>Back
+        </button>
       </div>
+      
 
       <div class="card-body p-4">
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-4">
@@ -48,23 +54,27 @@
                   <span class="font-semibold text-gray-700">Input String:</span>
                   <span class="ml-2">{{ result.input }}</span>
                 </p>
-                <p>
-                  <span class="font-semibold text-gray-700">Longest Length:</span>
-                  <span class="ml-2 bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                    {{ result.longestLength }}
-                  </span>
-                </p>
+                <div class="d-flex">
+                  <p>
+                    <span class="font-semibold text-gray-700">Longest Substring Length:</span>
+                    <span class="ml-2 bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                      {{ result.longestLength }} 
+                    </span>
+                  </p> &nbsp; ({{result.longestSubstring}})
+                </div>
+               
               </div>
 
               <div>
                 <p class="font-semibold text-gray-700 mb-2">Unique Substrings:</p>
                 <div class="unique-substrings flex flex-wrap gap-2">
-                  <span *ngFor="let substr of result.uniqueSubstrings" class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full 
-                                                     hover:bg-blue-100 transition-colors cursor-pointer"
-                    [class.bg-green-100]="substr.length === result.longestLength"
-                    [class.text-green-700]="substr.length === result.longestLength" (click)="copySubstring(substr)">
-                    {{ substr }}
-                  </span>
+                  <span *ngFor="let substr of result.uniqueSubstrings | lengthFilter:10" 
+                  class="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full hover:bg-blue-100 transition-colors cursor-pointer"
+                  [class.bg-green-100]="substr.length === result.longestLength"
+                  [class.text-green-700]="substr.length === result.longestLength" 
+                  (click)="copySubstring(substr)">
+              {{ substr }}
+            </span>
                 </div>
               </div>
 

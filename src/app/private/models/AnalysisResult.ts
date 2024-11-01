@@ -3,4 +3,5 @@ export interface AnalysisResult {
     timestamp: Date;
     longestLength: number;
     uniqueSubstrings: string[];
+    longestSubstring: string;
   }

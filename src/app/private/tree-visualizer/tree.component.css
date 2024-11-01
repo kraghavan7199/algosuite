@@ -2,6 +2,12 @@
     padding: 2rem;
   }
 
+  .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,.075);
+  }
+  
+
   :host ::ng-deep .p-organizationchart .p-organizationchart-node-content {
     border: none;
     background: transparent;
@@ -171,9 +177,4 @@
   border-radius: 4px;
 }
 
-@media (max-width: 576px) {
-  .btn {
-    width: 100%; /* Make buttons full-width on mobile */
-  }
-}
   

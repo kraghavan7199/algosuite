@@ -1,9 +1,14 @@
 <div class="container py-5 ">
   <div class="row justify-content-center">
     <div class="col-lg-10">
-      <div class="card-header text-center py-4">
-        <h1 class="mb-0">Tree Visualizer</h1>
-        <p class="text-muted mt-2 mb-0">Visualize BSTs and Perform Actions </p>
+      <div class="card-header d-flex align-items-center">
+        <div class="py-4">
+          <h1 class="mb-0">Tree Visualizer</h1>
+          <p class="text-muted mt-2 mb-0">Visualize BTs and Perform Actions </p>
+        </div>
+        <button (click)="goBack()" class="btn btn-outline-dark btn-sm me-3 ml-auto" >
+          <i class="fas fa-arrow-left me-2"></i>Back
+        </button>
       </div>
     </div>
   </div>
@@ -17,18 +22,16 @@
     <button class="btn btn-outline-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#generateTreeModal">
       <i class="fas fa-plus"></i> Generate Tree
     </button>
-    <div class="ml-auto">
-      <button class="btn btn-outline-primary me-2 mb-2" (click)="calculateMaxSumPath('maxLeafToNode')">
-        <i class="fas fa-calculator"></i> Calculate Max Sum Path Of Leaf To Node
-      </button>
-      <button class="btn btn-outline-primary me-2 mb-2" (click)="calculateMaxSumPath('maxPathBetweenNodes')">
-        <i class="fas fa-calculator"></i> Calculate Max Sum Path Of Node To Node
-      </button>
-    </div>
+    <button class="btn btn-outline-primary me-2 mb-2" (click)="calculateMaxSumPath('maxLeafToNode')">
+      <i class="fas fa-calculator"></i>  Max Leaf Path
+    </button>
+    <button class="btn btn-outline-primary me-2 mb-2" (click)="calculateMaxSumPath('maxPathBetweenNodes')">
+      <i class="fas fa-calculator"></i> Max Node Path
+    </button>
   </div>
-  <div class="treeCard card shadow-sm">
+  <div class="treeCard card shadow-sm " oncontextmenu="return false;">
     <div *ngIf="maxSum" class="alert alert-success d-flex m-4 align-items-center">
-      <p class="fw-bold">Maximum Sum Path From: {{maxSum}}</p>
+      <p>Maximum Sum Path {{maxSumLabel}}: <span class="fw-bold">{{maxSum}}</span></p>
       <button (click)="clearMaxSum()" class="btn btn-outline-danger ml-auto">Clear</button>
     </div>
     <div class="card-body">
@@ -45,7 +48,7 @@
           <p-organizationChart [value]="[root]" styleClass="company">
             <ng-template let-node pTemplate="default">
               <div class="node-content" (click)="openNodeModal(node)">
-                <div class="node-circle" [ngClass]="{'highlight': highlightedNodeId === node.data.id}">
+                <div class="node-circle" [ngClass]="{'highlight': isNodeHighlighted(node)}">
                   {{ node.data.value }}
                 </div>
               </div>
@@ -76,35 +79,31 @@
 
         <div class="card mb-4">
           <div class="card-header bg-light">
-            <h6 class="mb-0 fw-semibold">Add Child Nodes</h6>
+            <h6 class="mb-0 fw-semibold">{{!((selectedNode.children && selectedNode.children[0]) && (selectedNode.children && selectedNode.children[1]) ) ? 'Add' : ''}} Child Nodes</h6>
           </div>
           <div class="card-body">
-            <div class="row g-3">
+             <div class="row g-3">
               <div class="col-md-6">
                 <label class="form-label">Left Child Value</label>
                 <div class="input-group">
-                  <input type="number" class="form-control" [(ngModel)]="newLeftNodeValue" placeholder="Left value" />
+                  <input [disabled]="!!(selectedNode.children && selectedNode.children[0])"  type="number" class="form-control" [(ngModel)]="newLeftNodeValue" placeholder="Left value" />
                 </div>
               </div>
 
               <div class="col-md-6">
                 <label class="form-label">Right Child Value</label>
                 <div class="input-group">
-                  <input type="number" class="form-control" [(ngModel)]="newRightNodeValue" placeholder="Right value" />
+                  <input type="number"  [disabled]="!!(selectedNode.children && selectedNode.children[1])" class="form-control" [(ngModel)]="newRightNodeValue" placeholder="Right value" />
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-
-        <div class="d-grid">
-          <button class="btn btn-danger" (click)="deleteNode()" [disabled]="selectedNode === root">
-            <i class="fas fa-trash me-2"></i>Delete Node
-          </button>
-        </div>
       </div>
       <div class="modal-footer bg-light">
+        <button class="btn btn-danger" (click)="deleteNode()" [disabled]="selectedNode === root">
+          <i class="fas fa-trash me-2"></i>Delete Node
+        </button>
         <button type="button" class="btn btn-secondary" (click)="closeModal()">
           <i class="fas fa-times me-2"></i>Cancel
         </button>

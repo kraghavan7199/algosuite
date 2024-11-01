@@ -1,16 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 import { StringService } from '../../services/string.service';
 import moment from 'moment';
 import { debounceTime, distinctUntilChanged, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { AnalysisResult } from '../models/AnalysisResult';
+import { LengthFilterPipe } from '../../pipes/lengthfilter.pipe';
 
 @Component({
   selector: 'app-substring',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterOutlet, FormsModule, CommonModule, ReactiveFormsModule, LengthFilterPipe],
   providers: [StringService],
   templateUrl: './substring.component.html',
   styleUrl: './substring.component.css'
@@ -37,7 +38,7 @@ export class SubstringComponent implements OnInit {
   showLoadMore = true;
 
 
-  constructor(private fb: FormBuilder, private stringService: StringService) {
+  constructor(private fb: FormBuilder, private stringService: StringService, private location: Location) {
     this.form = this.fb.group({
       inputString: ['', [
         Validators.required,
@@ -79,7 +80,8 @@ export class SubstringComponent implements OnInit {
       const input = this.form.get('inputString')!.value;
       this.error = null;
       this.stringService.getSubstringAnalysis(input).subscribe((res: any) => {
-        this.result = { input, longestLength: res.longestSubstringLength, uniqueSubstrings: res.uniqueSubstring, timestamp: new Date() };
+        const longestSubstring = res.uniqueSubstring.find((string:any) => string.length === res.longestSubstringLength);
+        this.result = { input,  longestSubstring , longestLength: res.longestSubstringLength, uniqueSubstrings: res.uniqueSubstring, timestamp: new Date() };
         this.skip = 0;
         this.history = [];
         this.getUserHistory();
@@ -109,6 +111,26 @@ export class SubstringComponent implements OnInit {
   closeAnalysis() {
     this.showAnalysis = false;
     this.result = null;
+    this.form.controls['inputString'].setValue(null)
+  }
+
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    if (event.ctrlKey && event.key === 'x') {
+      event.preventDefault();
+      this.closeAnalysis();
+    }
+
+    if (event.ctrlKey && event.key === 'b') {
+      event.preventDefault();
+      this.goBack();
+    }
+
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }
