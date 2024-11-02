@@ -43,7 +43,7 @@ export class TreeComponent {
   translateX = 0;
   translateY = 0;
   scale = 1;
-
+  lastTouchDistance = 0;
 
   get transform() {
     return `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale})`;
@@ -328,6 +328,56 @@ export class TreeComponent {
   openGenerateTreeModal() {
     const modal = new Modal(this.generateTreeModal.nativeElement);
     modal.show();
+  }
+
+  onTouchStart(event: TouchEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+
+    if (event.touches.length === 2) {
+      // Store initial pinch distance for zoom
+      this.lastTouchDistance = this.getTouchDistance(event.touches);
+    } else if (event.touches.length === 1) {
+      // Single touch for dragging
+      this.startX = event.touches[0].clientX - this.translateX;
+      this.startY = event.touches[0].clientY - this.translateY;
+    }
+  }
+
+  onTouchMove(event: TouchEvent) {
+    event.preventDefault();
+    
+    if (event.touches.length === 2) {
+      // Handle pinch zoom
+      const currentDistance = this.getTouchDistance(event.touches);
+      const delta = currentDistance / this.lastTouchDistance;
+      
+      if (this.lastTouchDistance > 0) {
+        const rect = this.containerRef.nativeElement.getBoundingClientRect();
+        const centerX = (event.touches[0].clientX + event.touches[1].clientX) / 2 - rect.left;
+        const centerY = (event.touches[0].clientY + event.touches[1].clientY) / 2 - rect.top;
+        
+        const newScale = Math.max(0.5, Math.min(2, this.scale * delta));
+        const scaleChange = newScale - this.scale;
+        
+        this.translateX -= (centerX - this.translateX) * (scaleChange / this.scale);
+        this.translateY -= (centerY - this.translateY) * (scaleChange / this.scale);
+        this.scale = newScale;
+      }
+      
+      this.lastTouchDistance = currentDistance;
+    } else if (event.touches.length === 1 && this.isDragging) {
+      // Handle single touch drag
+      this.translateX = event.touches[0].clientX - this.startX;
+      this.translateY = event.touches[0].clientY - this.startY;
+    }
+  }
+
+  private getTouchDistance(touches: TouchList): number {
+    return Math.hypot(
+      touches[0].clientX - touches[1].clientX,
+      touches[0].clientY - touches[1].clientY
+    );
   }
 
 

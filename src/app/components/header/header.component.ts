@@ -4,18 +4,21 @@ import { Store } from '@ngrx/store';
 import { AuthState } from '../../store/state';
 import { selectUserProfile } from '../../store/selectors';
 import { AuthService } from '../../services/auth.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common'; 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, NgbModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
    
     name: string | null;
+    isCollapsed = true;
+    
     constructor(private router: Router, private authService: AuthService,  private store: Store<{ auth: AuthState }>) {
         this.name = null;
     }
@@ -27,6 +30,8 @@ export class HeaderComponent {
         }
       })
     }
+
+ 
 
     navigateToHome() {
       this.router.navigate(['/private/dashboard'])
@@ -50,4 +55,6 @@ export class HeaderComponent {
     logout() {
       this.authService.logout();
     }
+
+    
 }

@@ -4,7 +4,7 @@
       <div class="card-header d-flex align-items-center">
         <div class="py-4">
           <h1 class="mb-0">Tree Visualizer</h1>
-          <p class="text-muted mt-2 mb-0">Visualize BTs and Perform Actions </p>
+          <p class="text-muted mt-2 mb-0">Visualize Binary Trees and analyze </p>
         </div>
         <button (click)="goBack()" class="btn btn-outline-dark btn-sm me-3 ml-auto" >
           <i class="fas fa-arrow-left me-2"></i>Back
@@ -15,20 +15,20 @@
 </div>
 
 <div class="container mb-4">
-  <div class="d-flex">
-    <button class="btn btn-outline-primary me-2 mb-2" (click)="resetTree()">
-      <i class="fas fa-redo"></i> Reset Tree
-    </button>
-    <button class="btn btn-outline-primary me-2 mb-2" data-bs-toggle="modal" data-bs-target="#generateTreeModal">
-      <i class="fas fa-plus"></i> Generate Tree
-    </button>
-    <button class="btn btn-outline-primary me-2 mb-2" (click)="calculateMaxSumPath('maxLeafToNode')">
-      <i class="fas fa-calculator"></i>  Max Leaf Path
-    </button>
-    <button class="btn btn-outline-primary me-2 mb-2" (click)="calculateMaxSumPath('maxPathBetweenNodes')">
-      <i class="fas fa-calculator"></i> Max Node Path
-    </button>
+<div class="row">
+  <div class="col-md-3 mb-2">
+    <button class="btn btn-outline-primary w-100"  (click)="resetTree()">  <i class="fas fa-redo"></i> Reset Tree</button>
   </div>
+  <div class="col-md-3 mb-2">
+    <button class="btn  btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#generateTreeModal"><i class="fas fa-plus"></i> Generate Tree </button>
+  </div>
+  <div class="col-md-3 mb-2">
+    <button class="btn  btn-outline-primary w-100"  (click)="calculateMaxSumPath('maxLeafToNode')"><i class="fas fa-calculator"></i>  Max Leaf Path</button>
+  </div>
+  <div class="col-md-3 mb-2">
+    <button class="btn  btn-outline-primary w-100" (click)="calculateMaxSumPath('maxPathBetweenNodes')"><i class="fas fa-calculator"></i> Max Node Path</button>
+  </div>
+</div>
   <div class="treeCard card shadow-sm " oncontextmenu="return false;">
     <div *ngIf="maxSum" class="alert alert-success d-flex m-4 align-items-center">
       <p>Maximum Sum Path {{maxSumLabel}}: <span class="fw-bold">{{maxSum}}</span></p>
@@ -43,7 +43,9 @@
 
 
       <div #container class="tree-container" (mousedown)="startDragging($event)" (mousemove)="onDrag($event)"
-        (mouseup)="stopDragging()" (mouseleave)="stopDragging()" (wheel)="onWheel($event)">
+        (mouseup)="stopDragging()" (mouseleave)="stopDragging()" (wheel)="onWheel($event)"  (touchstart)="onTouchStart($event)"
+        (touchmove)="onTouchMove($event)"
+        (touchend)="stopDragging()">
         <div class="drag-hint">
           <i class="fas fa-arrows-alt"></i> Click and drag to move
         </div>
