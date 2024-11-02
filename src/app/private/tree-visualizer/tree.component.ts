@@ -94,7 +94,7 @@ export class TreeComponent {
 
 
 
-  openNodeModal(node: BinaryNode) { s
+  openNodeModal(node: BinaryNode) { 
     this.selectedNode = node;
     if(node.children && node.children[0] && node.children[0].data.value) {
        this.newLeftNodeValue =  <number>node.children[0].data.value;
