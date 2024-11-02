@@ -31,7 +31,7 @@ export const loginFailure = createAction(
 );
 
 export const signupFailure = createAction(
-  '[Auth] Login Failure',
+  '[Auth] SignUp Failure',
   props<{ error: any }>()
 );
 export const logout = createAction('[Auth] Logout');

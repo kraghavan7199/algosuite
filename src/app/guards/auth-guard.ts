@@ -13,19 +13,15 @@ import { selectIsLoggedIn } from '../store/selectors';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const store = inject(Store);
-  console.log('Auth Guard triggered');
+  const store = inject(Store);  
   return store.select(selectIsLoggedIn).pipe(
     take(1),
     map(isLoggedIn => {
       if (isLoggedIn) {
         return true;
       }
-      console.log('here')
       const returnUrl = state.url;
-      router.navigate(['/auth'], {
-        queryParams: { returnUrl }
-      });
+      router.navigate(['/auth']);
       return false;
     })
   );

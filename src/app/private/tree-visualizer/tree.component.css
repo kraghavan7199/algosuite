@@ -148,6 +148,7 @@
   will-change: transform;
   min-width: 100%;
   min-height: 100%;
+  top: 10px;
 }
 
 .zoom-controls {
@@ -193,7 +194,7 @@
 
 .drag-hint {
   animation: fadeOut 0.5s ease-in forwards;
-  animation-delay: 5s;
+  animation-delay: 6s;
 }
 
 @keyframes fadeOut {
