@@ -52,7 +52,7 @@
         <div #content class="tree-content" [style.transform]="transform">
           <p-organizationChart [value]="[root]" styleClass="company">
             <ng-template let-node pTemplate="default">
-              <div class="node-content" (click)="openNodeModal(node)">
+              <div class="node-content" (click)="openNodeModal(node)" (touchstart)="$event.stopPropagation()">
                 <div class="node-circle" [ngClass]="{'highlight': isNodeHighlighted(node)}">
                   {{ node.data.value }}
                 </div>

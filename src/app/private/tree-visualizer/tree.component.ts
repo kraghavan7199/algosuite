@@ -94,12 +94,10 @@ export class TreeComponent {
 
 
 
-  openNodeModal(node: BinaryNode) {
+  openNodeModal(node: BinaryNode) { s
     this.selectedNode = node;
     if(node.children && node.children[0] && node.children[0].data.value) {
-       this.newLeftNodeValue =  <number>node.children[0
-      
-       ].data.value;
+       this.newLeftNodeValue =  <number>node.children[0].data.value;
     }
     if(node.children && node.children[1] && node.children[1].data.value) {
       this.newRightNodeValue =  <number>node.children[1].data.value;
@@ -335,10 +333,9 @@ export class TreeComponent {
     this.isDragging = true;
 
     if (event.touches.length === 2) {
-      // Store initial pinch distance for zoom
       this.lastTouchDistance = this.getTouchDistance(event.touches);
     } else if (event.touches.length === 1) {
-      // Single touch for dragging
+
       this.startX = event.touches[0].clientX - this.translateX;
       this.startY = event.touches[0].clientY - this.translateY;
     }
@@ -348,7 +345,7 @@ export class TreeComponent {
     event.preventDefault();
     
     if (event.touches.length === 2) {
-      // Handle pinch zoom
+    
       const currentDistance = this.getTouchDistance(event.touches);
       const delta = currentDistance / this.lastTouchDistance;
       
@@ -367,7 +364,7 @@ export class TreeComponent {
       
       this.lastTouchDistance = currentDistance;
     } else if (event.touches.length === 1 && this.isDragging) {
-      // Handle single touch drag
+      
       this.translateX = event.touches[0].clientX - this.startX;
       this.translateY = event.touches[0].clientY - this.startY;
     }
