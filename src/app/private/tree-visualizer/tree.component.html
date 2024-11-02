@@ -44,7 +44,10 @@
 
       <div #container class="tree-container" (mousedown)="startDragging($event)" (mousemove)="onDrag($event)"
         (mouseup)="stopDragging()" (mouseleave)="stopDragging()" (wheel)="onWheel($event)">
-        <div class="tree-content" [style.transform]="transform">
+        <div class="drag-hint">
+          <i class="fas fa-arrows-alt"></i> Click and drag to move
+        </div>
+        <div #content class="tree-content" [style.transform]="transform">
           <p-organizationChart [value]="[root]" styleClass="company">
             <ng-template let-node pTemplate="default">
               <div class="node-content" (click)="openNodeModal(node)">
@@ -117,7 +120,7 @@
 <div class="modal-backdrop fade show" *ngIf="showModal"></div>
 <p-toast position="top-right"></p-toast>
 
-<div class="modal fade" id="generateTreeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+<div #generateTreeModal  class="modal fade" id="generateTreeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
   aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

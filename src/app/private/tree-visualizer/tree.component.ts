@@ -1,30 +1,14 @@
 import { CommonModule, Location } from "@angular/common";
-import { Component, ElementRef, HostListener, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterOutlet } from "@angular/router";
-import * as d3 from 'd3';
 import { MessageService, TreeNode } from "primeng/api";
 import { OrganizationChartModule } from "primeng/organizationchart";
 import { ToastModule } from "primeng/toast";
 import { TreeService } from "../../services/tree.service";
-import { LengthFilterPipe } from "../../pipes/lengthfilter.pipe";
-declare var bootstrap: any;
-
-
-interface BinaryNode extends TreeNode {
-  data: {
-    value: number | string;
-    id: string;
-  };
-  children?: BinaryNode[];
-}
-
-interface Node {
-  value: number;
-  uniqueId: string;
-  left: Node | undefined;
-  right: Node | undefined;
-}
+import { BinaryNode } from "../models/BinaryNode";
+import { Node } from "../models/Node";
+import { Modal } from 'bootstrap';
 
 @Component({
   selector: 'app-tree',
@@ -37,6 +21,11 @@ interface Node {
 
 })
 export class TreeComponent {
+
+  @ViewChild('container') containerRef!: ElementRef;
+  @ViewChild('content') content!: ElementRef;
+  @ViewChild('generateTreeModal') generateTreeModal!: ElementRef;
+
   root!: BinaryNode;
   showModal = false;
   selectedNode: BinaryNode | null = null;
@@ -47,9 +36,7 @@ export class TreeComponent {
   highlightedNodeId: any = null;
   private isAnimating = false;
   depth = 0;
-  @ViewChild('container') containerRef!: ElementRef;
   maxSumLabel!: 'From A Leaf Node To Any Node' | 'Between Any Two Nodes';
-
   isDragging = false;
   startX = 0;
   startY = 0;
@@ -66,9 +53,11 @@ export class TreeComponent {
 
   ngOnInit() {
     this.getTree();
+   
 
   }
 
+  
 
 
   getTree() {
@@ -102,6 +91,8 @@ export class TreeComponent {
     this.treeService.saveTree(null).subscribe(res => {
     });
   }
+
+
 
   openNodeModal(node: BinaryNode) {
     this.selectedNode = node;
@@ -334,6 +325,12 @@ export class TreeComponent {
     this.location.back();
   }
 
+  openGenerateTreeModal() {
+    const modal = new Modal(this.generateTreeModal.nativeElement);
+    modal.show();
+  }
+
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
     if (event.ctrlKey && event.key === 'd') {
@@ -346,10 +343,11 @@ export class TreeComponent {
       this.goBack();
     }
 
-    if (event.ctrlKey && event.key === 'l') {
+    if (event.ctrlKey && event.key === 'q') {
       event.preventDefault();
-      this.goBack();
+      this.openGenerateTreeModal();
     }
+
 
   }
 

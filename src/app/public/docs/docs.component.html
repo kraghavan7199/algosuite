@@ -1,30 +1,115 @@
-<div class="container">
+<div class="container my-5">
     <div class="row">
-        <div class="col-3 sidebar">
-            <h3>Table of Contents</h3>
-            <ul>
-                <li><a href="#">Introduction</a></li>
-                <li><a href="#">Getting Started</a></li>
-                <li><a href="#">String Analyzer</a></li>
-                <li><a href="#">Tree Visualizer</a></li>
-            </ul>
+        <div class="col-md-3">
+            <div class="sticky-top pt-4">
+                <div class="list-group">
+                    <a href="#overview" class="list-group-item list-group-item-action">Overview</a>
+                    <a href="#string-analyzer" class="list-group-item list-group-item-action">String Analyzer</a>
+                    <a href="#tree-visualizer" class="list-group-item list-group-item-action">Tree Visualizer</a>
+                </div>
+            </div>
         </div>
-        <div class="col-9 content">
-            <h1>Documentation</h1>
-            <p>Welcome to our documentation page! Here you'll find everything you need to get started with our product.
-            </p>
-            <h2>Introduction</h2>
-            <p>Our product is designed to help you streamline your workflow and increase productivity. With a range of
-                features and customizable options, you'll be able to tailor the experience to your specific needs.</p>
-            <h2>String Analyzer</h2>
-            <p>The String Analyzer is a tool designed to analyze a given word. Enter the word you wish to analyze and, if needed, select from autocomplete suggestions. Upon searching, the tool displays the length of the longest substring, along with a list of all substrings, highlighting each longest substring found.</p>
-            <h2>Components</h2>
-            <p>Our platform offers a variety of components that you can use to build your perfect workflow. From task
-                management tools to collaborative features, we've got you covered.</p>
-            <h2>Utilities</h2>
-            <p>In addition to our core components, we also offer a range of utilities to help you get the most out of
-                our platform. From reporting tools to automation features, you'll have all the tools you need to
-                succeed.
+
+        <div class="col-md-9">
+            <section id="overview" class="mb-5">
+                <h1>AlgoSuite Documentation</h1>
+                <p class="lead">
+                    AlgoSuite is a powerful tool for algorithm visualization and string analysis, featuring two main modules:
+                    String Explorer and Tree Visualizer.
+                </p>
+            </section>
+
+            <section id="string-analyzer" class="mb-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">String Explorer</h2>
+                        <p class="card-text">
+                            The String Explorer module provides comprehensive substring analysis capabilities.
+                        </p>
+
+                        <h3>Features</h3>
+                        <div class="list-group mb-4">
+                            <div class="list-group-item">
+                                <h5>Longest Substring Analysis</h5>
+                                <ul>
+                                    <li>Find the length of the longest substring</li>
+                                    <li>Identify the longest substring</li>
+                                    <li>Generate a list of all unique substrings</li>
+                                </ul>
+                            </div>
+                            <div class="list-group-item">
+                                <h5>Search History</h5>
+                                <p>View and manage your complete history of analyzed strings</p>
+                            </div>
+                        </div>
+
+                        <h3>Usage</h3>
+                        <div class="alert alert-info">
+                            <p>Enter your string in the input field and click "Analyze" to get instant results.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tree-visualizer" class="mb-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Tree Visualizer</h2>
+                        <p class="card-text">
+                            Interactive binary tree visualization and analysis tool.
+                        </p>
+
+                        <h3>Features</h3>
+                        <div class="accordion" id="treeFeatures">
+                            <div class="accordion-item">
+                                <h4 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#nodeManagement">
+                                        Node Management
+                                    </button>
+                                </h4>
+                                <div id="nodeManagement" class="accordion-collapse collapse show">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>Add individual nodes to the tree</li>
+                                            <li>Generate a complete binary tree based on specified depth</li>
+                                            <li>Delete entire tree or specific nodes</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h4 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pathAnalysis">
+                                        Path Analysis
+                                    </button>
+                                </h4>
+                                <div id="pathAnalysis" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>Find maximum sum path from leaf to node</li>
+                                            <li>Calculate maximum sum path from any node to any other node</li>
+                                            <li>Visual highlighting of optimal paths</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="mt-4">Quick Start Guide</h3>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <ol>
+                                    <li>Click the to manually configure nodes</li>
+                                    <li>Or use "Generate Tree" to create a complete tree</li>
+                                    <li>Click The Max Leaf Path button to calculate the Max sum path from leaf to node </li>
+                                    <li>Click The Max Node Path button to calculate the Max sum path from a node to any node </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 </div>
