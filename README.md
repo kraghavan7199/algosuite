@@ -60,7 +60,7 @@ ng serve
 3. View the calculated maximum sum paths
 4. Interact with the tree visualization (zoom, pan)
 
-## 📱 Responsive Design
+## Responsive Design
 
 The application is fully responsive and supports:
 - Desktop browsers
