@@ -1,27 +1,68 @@
-# Algosuite
+# AlgoSuite
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.5.
+A modern Angular application that provides tools for string analysis and binary tree calculations with interactive visualizations.
 
-## Development server
+🌐 **Live Demo:** [https://algosuite.netlify.app/landing](https://algosuite.netlify.app/landing)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
+### 1. Longest Substring Calculator
+- Interactive string input interface
+- Real-time calculation of longest substring without repeating characters
+- Color-coded visualization of the identified substring
+- Responsive and modern UI design
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 2. Binary Tree Path Sum Calculator
+- Visual tree builder interface
+- Tree generation based on depth input available
+- Maximum sum path calculations:
+  - Leaf node to any node
+  - Between any two nodes
+- Interactive and zoomable tree visualization
+- Path highlighting for maximum sum routes
 
-## Build
+## Technical Stack
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Frontend Framework:** Angular (latest version)
+- **State Management:** NgRx/RxJS
+- **Styling:** CSS
+- **Visualization:** PrimeNG (Component Library)
 
-## Running unit tests
+## Installation
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+# Clone the repository
+git clone [repository-url]
 
-## Running end-to-end tests
+# Navigate to project directory
+cd string-tree-analysis
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+# Install dependencies
+npm install
 
-## Further help
+# Start development server
+ng serve
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Usage
+
+### String Analysis
+1. Navigate to the String Analysis page
+2. Enter your string in the input field
+3. View the real-time analysis of the longest substring
+4. Observe the color-coded highlighting of the result
+
+### Binary Tree Calculator
+1. Navigate to the Tree Calculator page
+2. Choose between:
+   - Manual tree building using the visual interface
+   - Automatic generation based on depth
+3. View the calculated maximum sum paths
+4. Interact with the tree visualization (zoom, pan)
+
+## 📱 Responsive Design
+
+The application is fully responsive and supports:
+- Desktop browsers
+- Tablets
+- Mobile devices
