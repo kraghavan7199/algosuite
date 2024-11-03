@@ -32,7 +32,7 @@ A modern Angular application that provides tools for string analysis and binary 
 
 ```bash
 # Clone the repository
-git clone [repository-url]
+git clone [https://github.com/kraghavan7199/algosuite.git]
 
 # Navigate to project directory
 cd string-tree-analysis
